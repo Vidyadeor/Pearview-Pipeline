@@ -70,11 +70,11 @@ if __name__ == "__main__":
     table_list = ["student","courses","exam","score"]
     spark = create_spark_session()
     print(f'Spark Session Is : {spark}')
+    curr_date = datetime.datetime.now()
     for table in table_list:
         print(table)
         df = read_from_mysql(table)
         print(f"dataframe {table} is{df.show()}")
-        curr_date = datetime.datetime.now()
         path =f"s3a://perviewdata/{curr_date}/"+table
         write_to_s3(df,path)
     close_session(spark)
