@@ -3,6 +3,7 @@ from pyspark.sql import SparkSession
 import datetime
 from cryptography.fernet import Fernet
 
+
 encry_aceess_key = b'gAAAAABjYkX_U8a1_xBmVziWAqZFnxjEaHHUo0me3kg6-CM_S-6izl0vKZ-HRAjomKK5ZMWltamvEBbPytw3xkvTLrx3LVRRYB8BHACOgfxMVvrNHeIKg3Q='
 key1 = b'QqiMVLgR0EQ_8RtOkSTGTVdA9OwMgmIOPY5_5_q9Kdg='
 fernet = Fernet(key1)
@@ -31,6 +32,7 @@ def create_spark_session():
     except Exception as e:
         print(e)
 
+
 def read_from_mysql(table_name):
     try:
 
@@ -50,6 +52,8 @@ def read_from_mysql(table_name):
         return  df 
     except Exception as e:
         print(e)
+
+        
 def write_to_s3(df,path):
     df.write.mode("overwrite").csv(path)
 
