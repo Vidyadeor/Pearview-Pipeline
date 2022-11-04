@@ -26,8 +26,8 @@ print(access_value_encrypted)
 # password decryption
 def decrypt_value(key, value):
     try:
-        fernet = Fernet(key)
-        decrypted_value = fernet.decrypt(value).decode()
+        fernet = Fernet(bytes(key, encoding='utf-8'))
+        decrypted_value = fernet.decrypt(bytes(value, encoding='utf-8')).decode()
     except Exception as e:
         print('error while decryption')
         print(e)
