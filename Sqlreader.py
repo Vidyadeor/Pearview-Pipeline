@@ -6,19 +6,33 @@ from pyspark.sql import SparkSession
 import datetime
 from datetime import date
 from cryptography.fernet import Fernet
+import configparser
+
+# parse config data
+cfg = configparser.ConfigParser()
+cfg.read('config.ini')
+
+access_key_encrypted = cfg['aws']['aws_access_key']
+access_value_encrypted = cfg['aws']['aws_access_value']
+secret_key_encrypted = cfg['aws']['aws_secret_key']
+secret_value_encrypted = cfg['aws']['aws_secret_value']
+mysql_user = cfg['mysql']['user']
+mysql_pwd_key = cfg['mysql']['pwd_key']
+mysql_password = cfg['mysql']['password']
 
 
-encry_aceess_key = b'gAAAAABjYkX_U8a1_xBmVziWAqZFnxjEaHHUo0me3kg6-CM_S-6izl0vKZ-HRAjomKK5ZMWltamvEBbPytw3xkvTLrx3LVRRYB8BHACOgfxMVvrNHeIKg3Q='
-key1 = b'QqiMVLgR0EQ_8RtOkSTGTVdA9OwMgmIOPY5_5_q9Kdg='
-fernet = Fernet(key1)
-access_key = fernet.decrypt(encry_aceess_key).decode()
+print(access_value_encrypted)
 
-encry_secret_key = b'gAAAAABjYkfCzsn3NvELfTBJnWEbja4EQjQpDeo4mq4KBDTYl6xOqrgnMa_uCQPyKHTp8zIphfuY4oa7K0e34Qp_cF2FZRc0BeQiLdnMibp5OmPDAjJSDY1Trecz3HdOQF2pbenB8rgj'
-key2 = b'3Z1g5reKuz15Kg24io2mBraVQ-yOwMHPjNQdVjaQ5Ec='
-fernet = Fernet(key2)
-secret_key = fernet.decrypt(encry_secret_key).decode()
+# password decryption
+def decrypt_value(key, value):
+    fernet = Fernet(key)
+    decrypted_value = fernet.decrypt(value).decode()
+    return decrypted_value
 
+access_key = decrypt_value(access_key_encrypted, access_value_encrypted)
+secret_key = decrypt_value(secret_key_encrypted, secret_value_encrypted)
 
+# create spark session
 def create_spark_session():
     try:
         spark = SparkSession \
@@ -36,21 +50,18 @@ def create_spark_session():
     except Exception as e:
         print(e)
 
-
+# reading data tables from mysql
 def read_from_mysql(table_name):
     try:
 
-        pwd_key = b'gAAAAABjYklL4Kj4nBzI1OXxZT7sHGMM_o7WfsQNEINLE1xbv348Sze44oo3y4l_aNX0510lHbnhmcmF9V3FojdwIsXXtcSE8A=='
-        key3 = b't-OfylTkIPkrf8s3CIwN77wcgSppXuhI9btLJHO3yv8='
-        fernet = Fernet(key3)
-        password = fernet.decrypt(pwd_key).decode()
+        password = decrypt_value(mysql_pwd_key, mysql_password)
 
         df = spark.read \
              .format("jdbc") \
              .option("url", "jdbc:mysql://database-1.chptuk37dacd.ap-south-1.rds.amazonaws.com:3306/pearview") \
              .option("driver", "com.mysql.cj.jdbc.Driver") \
              .option("dbtable", table_name) \
-             .option("user", "admin") \
+             .option("user", mysql_user) \
              .option("password", password) \
              .load() 
         return  df 
