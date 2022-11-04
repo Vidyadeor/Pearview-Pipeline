@@ -76,8 +76,6 @@ def close_session(spark):
 def orchestration():
     try:
         table_list = ["student","courses","exam","score"]
-        spark = create_spark_session()
-        print(f'Spark Session Is : {spark}')
         curr_date = date.today()
         for table in table_list:
             print(table)
@@ -91,4 +89,6 @@ def orchestration():
 
 
 if __name__ == "__main__":
+    spark = create_spark_session()
+    print(f'Spark Session Is : {spark}')
     orchestration()
