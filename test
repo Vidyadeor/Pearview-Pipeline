@@ -1,0 +1,17 @@
+
+import mysql.connector
+ENDPOINT="database-1.chptuk37dacd.ap-south-1.rds.amazonaws.com"
+PORT="3306"
+USER="admin"
+PASSWORD = 'Admin123'
+DBNAME="pearview"
+
+try:
+    conn =  mysql.connector.connect(host=ENDPOINT, user=USER, passwd=PASSWORD, port=PORT, database=DBNAME)
+    cur = conn.cursor()
+    cur.execute("""INSERT INTO `pearview`.`job_details` (`id`, `jobId`) VALUES ('1', '123')""")
+    query_results = cur.fetchall()
+    print(query_results)
+except Exception as e:
+    print("Database connection failed due to {}".format(e))          
+                

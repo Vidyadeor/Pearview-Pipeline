@@ -3,6 +3,8 @@
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col,count
+import datetime
+from datetime import date
 
 def create_spark_session():
         spark = SparkSession \
@@ -30,8 +32,9 @@ def write_to_redshift(df,table_name,url,username,password):
 if __name__ == "__main__":
     table_list = ["Student","courses","exam","score"]
     spark = create_spark_session()
-    path ="s3a://prewiew-pear-raw-data1/"
-    url = "jdbc:redshift://redshift-cluster-1.cag974yfyey1.us-east-1.redshift.amazonaws.com:5439/pearviewdb1"
+    curr_date = date.today()
+    path =f"s3a://perviewdata/{curr_date}/"
+    url = "jdbc:redshift://pearview.cpettxwhj8e5.ap-south-1.redshift.amazonaws.com:5439/finaldata"
     username ="XXXXX"
     password = "XXXXX"
     

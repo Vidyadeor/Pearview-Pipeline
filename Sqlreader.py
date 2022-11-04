@@ -1,6 +1,10 @@
+
+#Author : Satya
+
 import pyspark
 from pyspark.sql import SparkSession
 import datetime
+from datetime import date
 from cryptography.fernet import Fernet
 
 
@@ -53,32 +57,38 @@ def read_from_mysql(table_name):
     except Exception as e:
         print(e)
 
-        
+
 def write_to_s3(df,path):
     df.write.mode("overwrite").csv(path)
 
         
 def read_from_s3():
-        df.write.mode("overwrite").csv(path)
+    df.write.mode("overwrite").csv(path)
         
 
 def write_to_redshift():
-        pass
+    pass
 
 def close_session(spark):
     spark.stop()
 
 
+def orchestration():
+    try:
+        table_list = ["student","courses","exam","score"]
+        spark = create_spark_session()
+        print(f'Spark Session Is : {spark}')
+        curr_date = date.today()
+        for table in table_list:
+            print(table)
+            df = read_from_mysql(table)
+            print(f"dataframe {table} is{df.show()}")
+            path =f"s3a://perviewdata/{curr_date}/"+table
+            write_to_s3(df,path)
+        close_session(spark)
+    except Exception as e:
+        print(e)
+
 
 if __name__ == "__main__":
-    table_list = ["student","courses","exam","score"]
-    spark = create_spark_session()
-    print(f'Spark Session Is : {spark}')
-    curr_date = datetime.datetime.now()
-    for table in table_list:
-        print(table)
-        df = read_from_mysql(table)
-        print(f"dataframe {table} is{df.show()}")
-        path =f"s3a://perviewdata/{curr_date}/"+table
-        write_to_s3(df,path)
-    close_session(spark)
+    orchestration()
