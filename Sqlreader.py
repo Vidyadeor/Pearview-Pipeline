@@ -70,7 +70,7 @@ def read_from_mysql(table_name):
 
 
 def write_to_s3(df,path):
-    df.write.mode("overwrite").csv(path)
+    df.write.mode("overwrite").option("header","true").csv(path)
 
         
 def read_from_s3():
