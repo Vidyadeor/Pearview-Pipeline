@@ -83,7 +83,6 @@ def orchestration():
             print(f"dataframe {table} is{df.show()}")
             path =f"s3a://perviewdata/{curr_date}/"+table
             write_to_s3(df,path)
-        close_session(spark)
     except Exception as e:
         print(e)
 
@@ -92,3 +91,4 @@ if __name__ == "__main__":
     spark = create_spark_session()
     print(f'Spark Session Is : {spark}')
     orchestration()
+    close_session(spark)
