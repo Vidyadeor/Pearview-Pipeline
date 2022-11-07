@@ -6,18 +6,19 @@ import numpy as np
 ENDPOINT="database-1.chptuk37dacd.ap-south-1.rds.amazonaws.com"
 PORT="3306"
 USER="admin"
-PASSWORD = 'Admin123'
+PASSWORD = '**********'
 DBNAME="pearview"
 
 class DB():
+
     def execute(query, params):
         try:
             conn =  mysql.connector.connect(host=ENDPOINT, user=USER, passwd=PASSWORD, port=PORT, database=DBNAME)
-            cur = conn.cursor()
+            cursor = conn.cursor()
             #query_results = cur.fetchall()
             #print(query_results)
             print(query,params)
-            cur.execute(query, params)
+            cursor.execute(query, params)
             conn.commit()
             return True
         except Exception as e:

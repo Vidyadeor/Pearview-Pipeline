@@ -10,6 +10,7 @@ from cryptography.fernet import Fernet
 import configparser
 import numpy as np
 from db_utils import DB
+import os
 # parse config data
 cfg = configparser.ConfigParser()
 cfg.read('config.ini')
@@ -93,7 +94,7 @@ def orchestration():
             records_processed+=df.count()
             print(f"dataframe {table} is{df.show()}")
             path =f"s3a://perviewdata/{curr_date}/"+table
-            #write_to_s3(df,path)
+            write_to_s3(df,path)
     except Exception as e:
         job_details['job_status'] = 'Failed'
         print(e)
