@@ -14,7 +14,6 @@ class DB():
         try:
             conn =  mysql.connector.connect(host=ENDPOINT, user=USER, passwd=PASSWORD, port=PORT, database=DBNAME)
             cur = conn.cursor()
-            #cur.execute("""INSERT INTO `pearview`.`job_execution_log` (`jobId`, `start_time`, `end_time`, `parameters`, `job_status`, `job_type`, `records_processed`) VALUES ('7', '2022-11-07 11:11:11', '2022-11-07 11:11:11', '{}', 'test', 'ingestion', '10')""")
             #query_results = cur.fetchall()
             #print(query_results)
             print(query,params)
@@ -61,9 +60,3 @@ class DB():
         except:
             print('Error inserting data.')
             return False
-
-data = {'records_processed': 770, 'job_status': 'Completed', 'start_time': '2022-11-07 19:29:58.079572', 'end_time': '2022-11-07 19:30:18.429971', 'job_type': 'Data Ingestion', 'parameters': str({})}
-table = 'job_execution_log'
-query, params = DB.insert_dict(data, table)
-res = DB.execute(query, params)
-print(res)
