@@ -83,6 +83,17 @@ def close_session(spark):
 
 
 def orchestration():
+
+
+    try:
+        job_details = {}
+        start_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
+        spark = create_spark_session()
+        global jobId 
+        jobId = spark.sparkContext.applicationId
+        print(f'Spark Session Is : {spark.sparkContext.applicationId}')
+    except Exception as e:
+        print(e)
     # Step 1
     try:
         table_list = ["student","courses","exam","score"]
@@ -119,12 +130,4 @@ def orchestration():
 
 
 if __name__ == "__main__":
-
-    job_details = {}
-    start_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
-    spark = create_spark_session()
-    global jobId 
-    jobId = spark.sparkContext.applicationId
-    print(f'Spark Session Is : {spark.sparkContext.applicationId}')
     orchestration()
-    close_session(spark)
