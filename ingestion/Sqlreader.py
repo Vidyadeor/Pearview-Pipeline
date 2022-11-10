@@ -9,7 +9,7 @@ from datetime import date
 from cryptography.fernet import Fernet
 import configparser
 import numpy as np
-from db_utils import DB
+from common.db_utils import DB
 import os
 # parse config data
 cfg = configparser.ConfigParser()
@@ -83,7 +83,6 @@ def close_session(spark):
 
 
 def orchestration():
-
 
     try:
         job_details = {}

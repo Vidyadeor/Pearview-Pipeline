@@ -33,6 +33,8 @@ if __name__ == "__main__":
     # df.show(10)
     df.createOrReplaceTempView('records')
     # data = spark.sql(f"select * from records")
+
+
 data = spark.sql(f"select * from records where UPDATED_DATE between '2022-11-03 08:32:23' and '2022-11-06 05:56:25'")
 data.show(10)
 
