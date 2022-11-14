@@ -6,7 +6,7 @@ import numpy as np
 ENDPOINT="database-1.chptuk37dacd.ap-south-1.rds.amazonaws.com"
 PORT="3306"
 USER="admin"
-PASSWORD = '**********'
+PASSWORD = "Admin123"
 DBNAME="pearview"
 
 class DB():

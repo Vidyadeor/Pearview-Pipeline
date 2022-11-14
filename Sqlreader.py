@@ -9,7 +9,7 @@ from datetime import date
 from cryptography.fernet import Fernet
 import configparser
 import numpy as np
-from .common.db_utils import *
+from common.db_utils import *
 import os
 # parse config data
 cfg = configparser.ConfigParser()
@@ -87,6 +87,7 @@ def orchestration():
     try:
         job_details = {}
         start_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
+        global spark
         spark = create_spark_session()
         global jobId 
         jobId = spark.sparkContext.applicationId
@@ -104,7 +105,7 @@ def orchestration():
             records_processed+=df.count()
             print(f"dataframe {table} is{df.show()}")
             path =f"s3a://perviewdata/{curr_date}/"+table
-            write_to_s3(df,path)
+            #write_to_s3(df,path)
     except Exception as e:
         job_details['job_status'] = 'Failed'
         print(e)
