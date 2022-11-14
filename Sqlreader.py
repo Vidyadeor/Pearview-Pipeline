@@ -9,7 +9,7 @@ from datetime import date
 from cryptography.fernet import Fernet
 import configparser
 import numpy as np
-from common.db_utils import DB
+from .common.db_utils import *
 import os
 # parse config data
 cfg = configparser.ConfigParser()
