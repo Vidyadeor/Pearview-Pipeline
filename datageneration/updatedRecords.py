@@ -1,5 +1,6 @@
 import configparser
 from pyspark.sql import SparkSession
+from cryptography.fernet import Fernet
 from datetime import datetime
 import sys
 
