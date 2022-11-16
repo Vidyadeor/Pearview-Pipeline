@@ -105,7 +105,7 @@ def orchestration():
             records_processed+=df.count()
             print(f"dataframe {table} is{df.show()}")
             path =f"s3a://perviewdata/{curr_date}/"+table
-            #write_to_s3(df,path)
+            write_to_s3(df,path)
     except Exception as e:
         job_details['job_status'] = 'Failed'
         print(e)
