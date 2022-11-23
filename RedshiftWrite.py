@@ -62,7 +62,7 @@ def write_to_redshift(df, table_name, url, username, password):
         mode('append').save()
 
 
-if __name__ == "__main__":
+def orchestration():
     table_list = ["student", "courses", "exam", "score"]
     curr_date = date.today()
     path = f"s3a://perviewdata/{curr_date}/"
@@ -84,6 +84,9 @@ if __name__ == "__main__":
         col("COURSE_NAME")).avg("SCORE").withColumnRenamed("avg(SCORE)", "Average_Marks")
     avg_marks_per_course.show()
     write_to_redshift(avg_marks_per_course, "avg_marks_per_course", url, username, password)
+
+if __name__ == "__main__":
+    orchestration()
 
     
     
