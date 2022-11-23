@@ -75,9 +75,10 @@ def orchestration():
     course_df = read_from_s3(path + "courses")
     score_df = read_from_s3(path + "score")
     exam_df = read_from_s3(path + "exam")
-
+    print(student_df)
     no_of_course = student_df.join(course_df, student_df.STUDENT_ID == course_df.STUDENT_ID).groupBy(
         col("COURSE_NAME")).count().withColumnRenamed("count", "No_of_Student")
+    print(no_of_course)
     write_to_redshift(no_of_course, "no_of_course", url, username, password)
 
     avg_marks_per_course = score_df.join(course_df, score_df.COURSE_ID == course_df.COURSE_ID).groupBy(
