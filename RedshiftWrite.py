@@ -7,7 +7,7 @@ import datetime
 from datetime import date
 from cryptography.fernet import Fernet
 import configparser
-
+from datetime import time
 cfg = configparser.ConfigParser()
 cfg.read('config.ini')
 
@@ -83,7 +83,7 @@ def orchestration():
         col("COURSE_NAME")).count().withColumnRenamed("count", "No_of_Student")
     print(f"dataframe no_of_course is{no_of_course.show()}")
     write_to_redshift(no_of_course, "no_of_course", url, username, password)
-
+    time.sleep(240)
     avg_marks_per_course = score_df.join(course_df, score_df.COURSE_ID == course_df.COURSE_ID).groupBy(
         col("COURSE_NAME")).avg("SCORE").withColumnRenamed("avg(SCORE)", "Average_Marks")
     avg_marks_per_course.show()
