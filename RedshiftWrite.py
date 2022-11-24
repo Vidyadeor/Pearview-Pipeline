@@ -54,12 +54,15 @@ def read_from_s3(path):
 
 
 def write_to_redshift(df, table_name, url, username, password):
-    df.write.format("jdbc"). \
-        option("url", url). \
-        option("dbtable", table_name). \
-        option("user", username). \
-        option("password", password). \
-        mode('append').save()
+    try:
+        df.write.format("jdbc"). \
+            option("url", url). \
+            option("dbtable", table_name). \
+            option("user", username). \
+            option("password", password). \
+            mode('append').save()
+    except Exception as e:
+        print(f'error while writing {e}')
 
 
 def orchestration():
@@ -75,9 +78,10 @@ def orchestration():
     course_df = read_from_s3(path + "courses")
     score_df = read_from_s3(path + "score")
     exam_df = read_from_s3(path + "exam")
-
+    print(f"dataframe student_df is{student_df.show()}")
     no_of_course = student_df.join(course_df, student_df.STUDENT_ID == course_df.STUDENT_ID).groupBy(
         col("COURSE_NAME")).count().withColumnRenamed("count", "No_of_Student")
+    print(f"dataframe no_of_course is{no_of_course.show()}")
     write_to_redshift(no_of_course, "no_of_course", url, username, password)
 
     avg_marks_per_course = score_df.join(course_df, score_df.COURSE_ID == course_df.COURSE_ID).groupBy(
@@ -87,16 +91,3 @@ def orchestration():
 
 if __name__ == "__main__":
     orchestration()
-
-    
-    
-    
-        
-    
-
-
-
-
-
-
-
