@@ -40,11 +40,13 @@ secret_key = decrypt_value(secret_key_encrypted, secret_value_encrypted)
 
 # create spark session
 def create_spark_session():
+
     try:
         spark = SparkSession \
            .builder.config('spark.hadoop.fs.s3a.aws.credentials.provider', 'org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider')\
            .config('spark.hadoop.fs.s3a.access.key', f'{access_key}')\
            .config('spark.hadoop.fs.s3a.secret.key', f'{secret_key}')\
+           .config('com.amazonaws.services.s3.enableV4', 'true')\
            .config('spark.hadoop.fs.s3a.impl', 'org.apache.hadoop.fs.s3a.S3AFileSystem')\
            .master("local").appName("Preview data pipeline")\
            .getOrCreate()
