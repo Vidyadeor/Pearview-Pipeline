@@ -54,6 +54,7 @@ def create_spark_session():
         spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", f"{secret_key}")
         spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.impl", 'org.apache.hadoop.fs.s3a.S3AFileSystem')
         spark.sparkContext._jsc.hadoopConfiguration().set("com.amazonaws.services.s3.enableV4", "true")
+        spark.sparkContext.setSystemProperty("com.amazonaws.services.s3.enableV4", "true")
 
         return spark
     except Exception as e:
