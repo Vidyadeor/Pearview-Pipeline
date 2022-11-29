@@ -40,7 +40,6 @@ secret_key = decrypt_value(secret_key_encrypted, secret_value_encrypted)
 
 # create spark session
 def create_spark_session():
-
     try:
         spark = SparkSession \
            .builder.config('spark.hadoop.fs.s3a.aws.credentials.provider', 'org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider')\
@@ -52,7 +51,6 @@ def create_spark_session():
         spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", f"{access_key}")
         spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", f"{secret_key}")
         spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.impl", 'org.apache.hadoop.fs.s3a.S3AFileSystem')
-        spark.sparkContext.setSystemProperty("com.amazonaws.services.s3.enableV4", "true")
 
         return spark
     except Exception as e:
